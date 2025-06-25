@@ -1,8 +1,10 @@
 from typing import List
 
 from vidur.entities.base_entity import BaseEntity
+from vidur.entities.execution_time import ExecutionTime
 from vidur.entities.request import Request
 from vidur.logger import init_logger
+from vidur.types.replica_id import ReplicaId
 
 logger = init_logger(__name__)
 
@@ -21,10 +23,9 @@ class BatchStage(BaseEntity):
     def __init__(
         self,
         batch_id: int,
-        replica_id: int,
-        pipeline_stage: int,
-        execution_time: float,
-        model_execution_time: float,
+        replica_id: ReplicaId,
+        stage_id: int,
+        execution_time: ExecutionTime,
         requests: List[Request],
         num_tokens: List[Request],
     ) -> None:
@@ -34,9 +35,11 @@ class BatchStage(BaseEntity):
         self._num_tokens = num_tokens
         self._batch_id = batch_id
         self._replica_id = replica_id
-        self._pipeline_stage = pipeline_stage
+        self._stage_id = stage_id
         self._execution_time = execution_time
-        self._model_execution_time = model_execution_time
+
+        self._total_execution_time = self._execution_time.total_time
+        self._model_execution_time = self._execution_time.model_time
 
         self._scheduled_at = None
         self._completed_at = None
@@ -58,15 +61,19 @@ class BatchStage(BaseEntity):
 
     @property
     def execution_time(self) -> float:
-        return self._execution_time
+        return self._total_execution_time
 
     @property
     def model_execution_time(self) -> float:
         return self._model_execution_time
 
     @property
-    def pipeline_stage(self) -> int:
-        return self._pipeline_stage
+    def replica_id(self) -> ReplicaId:
+        return self._replica_id
+
+    @property
+    def stage_id(self) -> int:
+        return self._stage_id
 
     @property
     def request_ids(self) -> List[int]:
@@ -95,27 +102,26 @@ class BatchStage(BaseEntity):
         time: float,
     ) -> None:
         assert (
-            time == self._scheduled_at + self._execution_time
-        ), f"{time} != {self._scheduled_at} + {self._execution_time}"
+            time == self._scheduled_at + self._total_execution_time
+        ), f"{time} != {self._scheduled_at} + {self._total_execution_time}"
 
         self._completed_at = time
 
         for request in self._requests:
             request.on_batch_stage_end(
-                time, self._execution_time, self._model_execution_time
+                time, self._total_execution_time, self._model_execution_time
             )
 
     def to_dict(self) -> dict:
         return {
             "id": self._id,
             "size": self.size,
-            "execution_time": self._execution_time,
-            "model_execution_time": self._model_execution_time,
+            "execution_time": self._execution_time.to_dict(),
             "scheduled_at": self._scheduled_at,
             "completed_at": self._completed_at,
             "replica_id": self._replica_id,
             "batch_id": self._batch_id,
-            "pipeline_stage": self._pipeline_stage,
+            "stage_id": self._stage_id,
             "scheduled": self._scheduled,
             "request_ids": self.request_ids,
             "num_tokens": self._num_tokens,
@@ -125,15 +131,16 @@ class BatchStage(BaseEntity):
         return {
             "name": f"{self.request_ids}",
             "ph": "X",
-            "ts": (time - self._execution_time) * 1e6,
-            "dur": self._execution_time * 1e6,
-            "pid": self._replica_id,
-            "tid": self._pipeline_stage,
+            "ts": (time - self._total_execution_time) * 1e6,
+            "dur": self._total_execution_time * 1e6,
+            "pid": str(self._replica_id),
+            "tid": self._stage_id,
             "args": {
                 "batch_id": self._batch_id,
                 "batch_size": self.size,
                 "request_ids": self.request_ids,
                 "num_tokens": self._num_tokens,
-                # "requests": [request.to_dict() for request in self._requests],
+                "execution_time": self._execution_time.to_dict(),
+                "requests": [request.to_dict() for request in self._requests],
             },
         }

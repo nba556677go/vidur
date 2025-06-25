@@ -56,7 +56,7 @@ class CausalSelfAttention(torch.nn.Module):
             self.rotary_emb = get_rope(
                 self.head_dim,
                 rotary_dim=self.head_dim,
-                max_position=config.max_position_embeddings,
+                max_position=config.max_model_len,
                 base=config.rope_theta,
                 is_neox_style=config.is_neox_style,
                 rope_scaling=config.rope_scaling,
