@@ -25,7 +25,7 @@ Check input/output path in main before executing:
 python vllmbenchparser_fixedqps.py
 
 # QPS search mode parsing
-python qps_search/vllmbenchparser_qps_search.py
+python vllmbenchparser_qps_search.py
 ```
 ## Single Node Fixed QPS Analysis
 
