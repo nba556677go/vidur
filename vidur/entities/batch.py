@@ -1,8 +1,11 @@
 from typing import List
 
+import numpy as np
+
 from vidur.entities.base_entity import BaseEntity
 from vidur.entities.request import Request
 from vidur.logger import init_logger
+from vidur.types.replica_id import ReplicaId
 
 logger = init_logger(__name__)
 
@@ -29,7 +32,7 @@ def check_completed(func):
 class Batch(BaseEntity):
     def __init__(
         self,
-        replica_id: int,
+        replica_id: ReplicaId,
         requests: List[Request],
         num_tokens: List[int],
     ) -> None:
@@ -38,6 +41,9 @@ class Batch(BaseEntity):
 
         self._requests = requests
         self._num_tokens = num_tokens
+        self._num_tokens_dict = {
+            request.id: num_tokens[i] for i, request in enumerate(self._requests)
+        }
         self._total_num_tokens = sum(num_tokens)
         self._num_prefill_tokens = sum(
             [
@@ -45,8 +51,21 @@ class Batch(BaseEntity):
                 for r, t in zip(self.requests, self._num_tokens)
             ]
         )
-
-        self._total_num_tokens_rounded = (self._total_num_tokens + 7) // 8 * 8
+        decode_context_sizes = [
+            r.num_processed_tokens for r in self.requests if r.is_prefill_complete
+        ]
+        self._decode_context_sum = sum(decode_context_sizes)
+        self._decode_context_spread = max(decode_context_sizes, default=0) - min(
+            decode_context_sizes, default=0
+        )
+        self._decode_context_iqr = int(
+            (
+                np.percentile(decode_context_sizes, 75)
+                - np.percentile(decode_context_sizes, 25)
+            )
+            if len(decode_context_sizes) > 0
+            else 0
+        )
 
         self._scheduled_at = None
         self._completed_at = None
@@ -54,16 +73,16 @@ class Batch(BaseEntity):
         self._completed = False
 
     @property
-    def replica_id(self) -> int:
+    def replica_id(self) -> ReplicaId:
         return self._replica_id
-
-    @property
-    def creation_time(self) -> float:
-        return self._creation_time
 
     @property
     def num_tokens(self) -> List[int]:
         return self._num_tokens
+
+    @property
+    def num_tokens_dict(self) -> dict:
+        return self._num_tokens_dict
 
     @property
     def total_num_tokens(self) -> int:
@@ -76,6 +95,22 @@ class Batch(BaseEntity):
     @property
     def num_decode_tokens(self) -> int:
         return self.total_num_tokens - self.num_prefill_tokens
+
+    @property
+    def num_completed_prefills(self) -> int:
+        return len(self.completed_prefills)
+
+    @property
+    def decode_context_sum(self) -> int:
+        return self._decode_context_sum
+
+    @property
+    def decode_context_spread(self) -> int:
+        return self._decode_context_spread
+
+    @property
+    def decode_context_iqr(self) -> float:
+        return self._decode_context_iqr
 
     @property
     @check_scheduled
@@ -135,6 +170,15 @@ class Batch(BaseEntity):
     @property
     def completed_requests(self) -> List[Request]:
         return [request for request in self._requests if request.completed]
+
+    @property
+    def completed_prefills(self) -> List[Request]:
+        assert self.completed
+        return [
+            request
+            for request in self._requests
+            if request.prefill_completed_at == self.completed_at
+        ]
 
     def to_dict(self) -> dict:
         return {

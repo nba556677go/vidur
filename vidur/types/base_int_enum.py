@@ -7,4 +7,6 @@ class BaseIntEnum(IntEnum):
 
     @classmethod
     def from_str(cls, string):
+        if not isinstance(string, str):
+            string = str(string)
         return cls[string.upper()]

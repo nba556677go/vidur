@@ -1,0 +1,109 @@
+clusters:
+  - device: h100_p5
+    network_device: h100_p5
+    gpus_per_node: 8
+  - device: a100_p4d
+    network_device: p4d_a100_40g_nvlink
+    gpus_per_node: 8
+  - device: l40s_g6e48
+    network_device: l40s_g6e48
+    gpus_per_node: 8
+  - device: a10g_g5
+    network_device: a10g_g5
+    gpus_per_node: 8
+  - device: l4_g6
+    network_device: l4_g6
+    gpus_per_node: 8
+##
+global_schedulers:
+  - scheduler: round_robin
+
+
+replica_schedulers:
+  - scheduler: greedy
+    group_size: 1
+
+request_queues:
+  - name: fcfs
+    provider: fcfs
+
+
+replica_schedulers:
+  - scheduler: vllm_v1
+    chunk_size: 8192
+    
+slo_configs:
+  - name: ttft_p99_300ms
+    type: and
+    quantile: 0.99
+    slos:
+      - metric: prefill_e2e_time
+        value: 0.3
+
+#traces:
+#  - name: arxiv_150
+#    trace_file: "./data/processed_traces/arxiv_summarization_stats_llama2_tokenizer_filtered_v2_shortened.csv"
+#    max_seq_len: 16384
+#    enable_prefix_caching: false
+
+fixed_lengths:
+#  - name: fixed_2048_512
+#    prefill_tokens: 2048
+#    decode_tokens: 512
+#    enable_prefix_caching: false
+  - name: fixed_qu_brand_valid
+    prefill_tokens: 300
+    decode_tokens: 3
+    enable_prefix_caching: false
+
+#batch is for sarathi scheduler only
+batch_sizes: [32]
+tp_dimensions: [1, 2, 4, 8]
+pp_dimensions: [1]
+
+models:
+  - name: Meta-Llama-3-8B
+    identifier: meta-llama/Meta-Llama-3-8B
+  - name: Qwen-Qwen2.5-1.5B
+    identifier: Qwen/Qwen2.5-1.5B
+
+
+
+ 
+
+search_configs:
+
+  - trace: fixed_qu_brand_valid
+    model: Qwen-Qwen2.5-1.5B
+    search_for: qps
+    num_replicas: 1
+    qps: 2
+    num_requests: 300
+
+  - trace: fixed_qu_brand_valid
+    model: Qwen-Qwen2.5-1.5B
+    search_for: qps
+    num_replicas: 2
+    qps: 2
+    num_requests: 300
+
+  - trace: fixed_qu_brand_valid
+    model: Qwen-Qwen2.5-1.5B
+    search_for: qps
+    num_replicas: 4
+    qps: 2
+    num_requests: 300
+
+  - trace: fixed_qu_brand_valid
+    model: Qwen-Qwen2.5-1.5B
+    search_for: qps
+    num_replicas: 8
+    qps: 2
+    num_requests: 300
+
+  - trace: fixed_qu_brand_valid
+    model: Qwen-Qwen2.5-1.5B
+    search_for: qps
+    num_replicas: 16
+    qps: 2
+    num_requests: 300

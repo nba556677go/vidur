@@ -47,3 +47,7 @@ class BaseRegistry(ABC):
     @classmethod
     def get_from_str(cls, key_str: str, *args, **kwargs) -> Any:
         return cls.get(cls.get_key_from_str(key_str), *args, **kwargs)
+
+    @classmethod
+    def get_class_from_str(cls, key_str: str) -> Any:
+        return cls.get_class(cls.get_key_from_str(key_str))

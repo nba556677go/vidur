@@ -12,6 +12,7 @@ from tqdm import tqdm
 from vidur.profiling.common.model_config import ModelConfig
 from vidur.profiling.mlp.mlp_wrapper import MlpWrapper
 from vidur.profiling.utils import ProfileMethod, get_num_tokens_to_profile
+from sarathi.config import ParallelConfig
 
 
 def parse_args():
@@ -95,6 +96,16 @@ def profile_model(
 
     for num_tensor_parallel_workers in args.num_tensor_parallel_workers:
         if model_config.no_tensor_parallel and num_tensor_parallel_workers > 1:
+            pbar.update(len(num_tokens_to_profile))
+            continue
+        
+        # Skip if tensor parallel size would result in 0 KV heads
+        parallel_config = ParallelConfig(
+            tensor_parallel_size=num_tensor_parallel_workers,
+            pipeline_parallel_size=1,
+        )
+        if model_config.get_num_kv_heads(parallel_config) == 0:
+            print(f"Skipping {model} with TP={num_tensor_parallel_workers}: would result in 0 KV heads")
             pbar.update(len(num_tokens_to_profile))
             continue
 

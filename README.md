@@ -21,7 +21,15 @@ Vidur is a high-fidelity and extensible LLM inference system simulator. It can h
 ## Supported Models
 
 __Instructions on adding a new model to existing or new SKUs can be found [here](docs/profiling.md)__.
+### Supporting models in AWS instances (need to add profiles from s3://binghann/vidur_qps/profiling)
+```markdown
+| Model / Device | A10G_g5.48xlarge | L4_g6.48xlarge | A100_p4d.24xlarge | H100_p5.48xlarge | L40S_g6e.48xlarge |
+| --- | --- | --- | --- | --- | --- |
+| `meta-llama/Meta-Llama-3-8B` | ✅ | ✅ | ✅ | ✅ | ✅ |
+| `Qwen/Qwen2.5-1.5B` | ✅ | ✅ | ✅ | ✅ | ✅ |
+```
 
+### Supporting models from original repo
 | Model / Device | A100 80GB DGX | H100 DGX | 4xA100 80GB Pairwise NVLink Node | 8xA40 Pairwise NVLink Node |
 | --- | --- | --- | --- | --- |
 | `meta-llama/Meta-Llama-3-8B` | ✅ | ❌ | ✅ | ❌ |
@@ -31,6 +39,7 @@ __Instructions on adding a new model to existing or new SKUs can be found [here]
 | `meta-llama/Llama-2-70b-hf` | ✅ | ✅ | ✅ | ✅ |
 | `internlm/internlm-20b` | ✅ | ✅ | ✅ | ✅ |
 | `Qwen/Qwen-72B` | ✅ | ✅ | ✅ | ✅ |
+
 
 * All models support a maximum context length of 4k except `Llama3-8B` and `Llama3-70B` which support 16k context length by passing additional CLI params:
 
@@ -87,7 +96,8 @@ To opt out of wandb, pick any one of the following methods:
 1. `export WANDB_MODE=disabled` in your shell or add this in `~/.zshrc` or `~/.bashrc`. Remember to reload using `source ~/.zshrc`.
 2. Set `wandb_project` and `wandb_group` as `""` in `vidur/config/default.yml`. Also, remove these CLI params from the shell command with which the simulator is invoked.
 
-## Running the simulator
+## Running the simulator (Reproduce script documented in [here](docs/reproduce.md))
+
 
 To run the simulator, execute the following command from the repository root,
 
@@ -132,13 +142,8 @@ python -m vidur.main -h
 
     ![Chrome Trace](./assets/chrome_trace.png)
 
-## Formatting Code
 
-To format code, execute the following command:
-
-```sh
-make format
-```
+## Analysis on benchmark and simulation results are documented [here](docs/analysis.md)__.
 
 ## Using Canary Build
 

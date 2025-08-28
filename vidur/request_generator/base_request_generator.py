@@ -1,20 +1,21 @@
-import json
 from abc import ABC, abstractmethod
-from typing import List
+from typing import Optional
+
+import numpy as np
 
 from vidur.config import BaseRequestGeneratorConfig
 from vidur.entities import Request
 
 
 class BaseRequestGenerator(ABC):
-
     def __init__(self, config: BaseRequestGeneratorConfig):
-        self.config = config
+        self._config = config
+        self._random_number_generator = np.random.default_rng(config.seed)
 
     @abstractmethod
-    def generate_requests(self) -> List[Request]:
+    def get_next_request_arrival_time(self) -> Optional[float]:
         pass
 
-    def generate(self) -> List[Request]:
-        requests = self.generate_requests()
-        return requests
+    @abstractmethod
+    def get_next_request(self) -> Optional[Request]:
+        pass

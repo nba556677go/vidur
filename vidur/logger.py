@@ -47,5 +47,9 @@ def _setup_logger():
 _setup_logger()
 
 
-def init_logger(name: str):
-    return logging.getLogger(name)
+def init_logger(name: str, level: str = "info"):
+    logger = logging.getLogger(name)
+    level = level.upper()
+    if level in ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]:
+        logger.setLevel(getattr(logging, level))
+    return logger
