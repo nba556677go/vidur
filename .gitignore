@@ -212,3 +212,5 @@ test/
 !analysis/qps_search/max_qps/max_qps_per_dollar_barchart_multinode.png
 !analysis/qps_search/max_qps/min_total_cost_qps_per_node_40.png
 
+analysis/qps_search/max_qps/
+analysis/qps_search/config_optimizer_results.csv
