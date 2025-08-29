@@ -1,5 +1,15 @@
 # Vidur: LLM Inference System Simulator (With AWS benchmark)
 
+## Table of Contents
+- [Supported Models](#supported-models)
+- [Setup](#setup)
+- [Reproduce AWS instructions](#reproduce-aws-instructions---in-heredocsreproducemd)
+- [Analyze simulation](#analyze-simulation---in-heredocsanalysismd)
+- [Running the simulator](#running-the-simulator)
+- [Simulator Output](#simulator-output)
+- [Contributing](#contributing)
+- [Trademarks](#trademarks)
+
 Vidur is a high-fidelity and extensible LLM inference system simulator. It can help you with:
 
 1. Study the system performance of models under different workloads and configurations.
@@ -110,7 +120,14 @@ To opt out of wandb, pick any one of the following methods:
 1. `export WANDB_MODE=disabled` in your shell or add this in `~/.zshrc` or `~/.bashrc`. Remember to reload using `source ~/.zshrc`.
 2. Set `wandb_project` and `wandb_group` as `""` in `vidur/config/default.yml`. Also, remove these CLI params from the shell command with which the simulator is invoked.
 
-## Running the simulator (Reproduce script documented in [here](docs/reproduce.md))
+
+## Reproduce AWS instructions - in [here](docs/reproduce.md)
+
+
+## Analyze simulation - in [here](docs/analysis.md)
+
+
+## Running the simulator 
 
 
 To run the simulator, execute the following command from the repository root,
