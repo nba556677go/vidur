@@ -39,7 +39,7 @@ We need actual GPUs to get profiling data for a new model. Once the profiling is
     1. Checkout branch [`vidur`](https://github.com/nba556677go/sarathi-serve/tree/vidur)
     1. Follow its README to install it.
 ### Add model config
-1. Add a YAML model config for the new model in `vidur/config/model_config.py`.
+1. Add a model config class for the new model in `vidur/config/model_config.py`.
     - Use the model's HuggingFace model id for the file name eg. `data/model_configs/meta-llama/Llama-2-70b-hf.yml`.
     - Refer HuggingFace `config.json` for the model eg. <https://huggingface.co/meta-llama/Llama-2-70b-hf/blob/main/config.json>.
     - Ensure that correct parameters are set in the python file so that the reference transformer model [GPTModel](vidur/profiling/mlp/mlp_impl.py) closely resembles the new model.
@@ -101,9 +101,8 @@ Currently available data include:
 - `a100_p4d`: AWS p4d.24xlarge instance with 8 A100 GPUs connected via NVLink
 - `h100_p5`: AWS p5.48xlarge instance with 8 H100 GPUs connected via NVLink 
 
-### Steps to profile:
+### Steps to profile communication cost:
 
-1. Clone this (`vidur`) repo and create a Python virtual environment as in [Setup](README.md).
 1. Setup a ray cluster:
     1. Tensor parallelism is typically done on a single node so we don't need a multi-node cluster.
     1. However, pipeline parallelism is typically done across multiple nodes so we need at least 2 nodes there.
