@@ -2,7 +2,7 @@
 # Analyze Simulation and Benchmarked Data
 
 ## ⚠️ Warning
-The commands below are examples based on previous runs stored in `analysis/vllm_benchresults` and `analysis/vidur_results`. Cost analysis plotted with synthetic cost in `analysis/unitcost.csv`. Please reproduce first and verify input/output directory before executing. See [reproduce.md](reproduce.md).
+The commands below are examples based on previous runs stored in `analysis/vllm_benchresults`, `analysis/vidur_results`, and qps_sesarch results in `s3://binghann/vidur_data/qps_search/qu_brand/`. Cost analysis plotted with synthetic cost in `analysis/unitcost.csv`. Please reproduce first and verify input/output directory before executing. See [reproduce.md](reproduce.md).
 
 ## Move to Analysis Directory
 ```bash
