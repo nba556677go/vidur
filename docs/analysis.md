@@ -2,7 +2,7 @@
 # Analyze Simulation and Benchmarked Data
 
 ## ⚠️ Warning
-The commands below are examples based on previous runs stored in `analysis/vllm_benchresults` and `analysis/vidur_results`. Cost analysis plotted with synthetic cost in `analysis/unitcost.csv`. Please reproduce first and verify input/output directory before executing. See [docs/reproduce.md](docs/reproduce.md).
+The commands below are examples based on previous runs stored in `analysis/vllm_benchresults` and `analysis/vidur_results`. Cost analysis plotted with synthetic cost in `analysis/unitcost.csv`. Please reproduce first and verify input/output directory before executing. See [reproduce.md](reproduce.md).
 
 ## Move to Analysis Directory
 ```bash
