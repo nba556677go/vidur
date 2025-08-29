@@ -2,7 +2,13 @@
 
 ## add model profiles stored in s3
 ```
-aws s3 cp s3://binghann/vidur_qps/profiling data/profiling --recursive
+aws s3 cp s3://magnus-test/binghann_vidur vidur_data --recursive
+```
+
+### unzip the profiles.zip into profile directory
+```
+unzip  vidur_data/profiling/profiles.zip -d data/profiling/
+rm -f vidur_data/profiling/profiles.zip
 ```
 ## Simulation
 ### Fixed QPS simulation
@@ -10,7 +16,7 @@ aws s3 cp s3://binghann/vidur_qps/profiling data/profiling --recursive
 bash scripts/run_simulation.sh
 ```
 ### QPS search mode with config-optimizer (explanation in [here](docs/config_explorer.md))
-* comment each cluster info in config file if only one instance run at a time
+* comment each cluster info in config file if only desinated instance to be run
 ```
 clusters:
   #- device: h100_p5

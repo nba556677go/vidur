@@ -50,22 +50,34 @@ We need actual GPUs to get profiling data for a new model. Once the profiling is
 
     ```bash
         python vidur/profiling/mlp/main.py \
-        --models codellama/CodeLlama-34b-Instruct-hf \
-        --num_gpus 4
+        --models Qwen/Qwen2.5-1.5B \
+        --num_tensor_parallel_workers 1 2 4 8 \
+        --num_gpus 8
+        --output_dir profiling_outputs/compute/
+    ```
+    if encountering file not found error, run the command below:
+    ```
+    python -m vidur.profiling.mlp.main     --models Qwen/Qwen2.5-1.5B     --num_tensor_parallel_workers 1 2 4 8     --num_gpus 8     --output_dir profiling_outputs/compute/a100_p4d/ 
     ```
 
     - Run `python vidur/profiling/mlp/main.py --help` for more options.
-    - Copy the CSV file from `profiling_outputs/mlp/<timestamp>/codellama/CodeLlama-34b-Instruct-hf/mlp.csv` to `data/profiling/compute/a100/codellama/CodeLlama-34b-Instruct-hf/mlp.csv`.
+    - Copy the CSV file from `profiling_outputs/mlp/<timestamp>/Qwen/Qwen2.5-1.5B/mlp.csv` to `data/profiling/compute/a100/Qwen/Qwen2.5-1.5B/mlp.csv`.
 1. Now we need to do the attention profiling:
 
     ```bash
         python vidur/profiling/attention/main.py \
-        --models codellama/CodeLlama-34b-Instruct-hf \
-        --num_gpus 4
+        --models Qwen/Qwen2.5-1.5B \
+        --num_tensor_parallel_workers 1 2 4 8 \
+        --num_gpus 8
+        --output_dir profiling_outputs/compute/
+    ```
+    if encountering file not found error, run the command below:
+    ```
+    python -m vidur.profiling.attention.main     --models Qwen/Qwen2.5-1.5B     --num_tensor_parallel_workers 1 2 4 8     --num_gpus 8     --output_dir profiling_outputs/compute/a100_p4d/ 
     ```
 
     - Run `python vidur/profiling/attention/main.py --help` for more options.
-    - Copy the CSV file from `profiling_outputs/attention/<timestamp>/codellama/CodeLlama-34b-Instruct-hf/attention.csv` to `data/profiling/compute/a100/codellama/CodeLlama-34b-Instruct-hf/attention.csv`.
+    - Copy the CSV file from `profiling_outputs/attention/<timestamp>/Qwen/Qwen2.5-1.5B/attention.csv` to `data/profiling/compute/a100/Qwen/Qwen2.5-1.5B/attention.csv`.
     - Note that we are using `a100` as the device name. If you are using `h100` or some other device, then you need to create a new folder for that device in `data/profiling/compute` and copy the CSV files there.
 
 ## Network (Collectives) profiling
@@ -82,6 +94,11 @@ Currently available data include:
 - `h100_pair_nvlink`: Azure internal VM with 4 80GB H100 NVL GPUs with pair-wise NVLINK connectivity.
 - `a100_dgx`: A100 DGX with 8 80GB A100s.
 - `h100_dgx`: H100 DGX with 8 H100s.
+- `a10g_g5`: AWS g5.48xlarge instance with 8 A10G GPUs connected via PCIe
+- `l4_g6`: AWS g6.48xlarge instance with 8 L4 GPUs connected via PCIe
+- `l40s_g6e48`: AWS g6e.48xlarge instance with 8 L40S GPUs connected via PCIe
+- `a100_p4d`: AWS p4d.24xlarge instance with 8 A100 GPUs connected via NVLink
+- `h100_p5`: AWS p5.48xlarge instance with 8 H100 GPUs connected via NVLink 
 
 ### Steps to profile:
 
