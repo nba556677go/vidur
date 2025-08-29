@@ -206,8 +206,9 @@ test/
 # Allow specific PNG files referenced in docs/analysis.md
 !analysis/vidur_results/qu_brand/fixed_qps/aggregated_p99_latency_comparison.png
 !analysis/vidur_results/qu_brand/fixed_qps/aggregated_prediction_error_comparison.png
-!analysis/vidur_results/qu_brand/fixed_qps/parallel_figs/parallelism_strategies_p4d_a100_40g_nvlink_qps29.0.png
-!analysis/qps_search/max_qps/parallel_figs/parallelism_strategies_a10g_g5.png
+!analysis/vidur_results/qu_brand/fixed_qps/parallel_figs/parallelism_strategies_a10g_g5_qps10.0.png
+!analysis/qps_search/max_qps/parallel_figs/parallelism_strategies_l40s_g6e48.png
+!analysis/qps_search/max_qps/max_qps_per_dollar_barchart_single_node.png
 !analysis/qps_search/max_qps/max_qps_per_dollar_qps_Qwen_Qwen2.5-1.5B.png
 !analysis/qps_search/max_qps/max_qps_per_dollar_barchart_multinode.png
 !analysis/qps_search/max_qps/min_total_cost_qps_per_node_40.png

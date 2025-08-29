@@ -28,7 +28,7 @@ python compare_all_vidur_vllm_percentiles.py
 python get_config_optimizer_results_fixedqps.py
 ```
 
-- [Cost analysis with parallelism strategies ](../analysis/vidur_results/qu_brand/fixed_qps/parallel_figs/parallelism_strategies_a10g_g5_qps10.0.png)
+- [Cost analysis with parallelism strategies](../analysis/vidur_results/qu_brand/fixed_qps/parallel_figs/parallelism_strategies_a10g_g5_qps10.0.png)
 
 
 ## QPS Search Mode
@@ -48,7 +48,7 @@ python plot_max_qps_per_dollar_main.py
 
 #### Single Node Results with Benchmarks
 - [Cost analysis by parallelism](../analysis/qps_search/max_qps/parallel_figs/parallelism_strategies_l40s_g6e48.png)
-- Cost analysis by instance with benchmarks(../analysis/qps_search/max_qps/max_qps_per_dollar_barchart_single_node.png)
+- [Cost analysis by instance with benchmarks](../analysis/qps_search/max_qps/max_qps_per_dollar_barchart_single_node.png)
 
 #### Multinode Simulation
 
