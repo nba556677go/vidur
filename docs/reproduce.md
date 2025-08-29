@@ -65,3 +65,25 @@ cd  $HOME/vidur-simulator/benchmarks/llm/vllm/latency/
 bash run_bench_latency.sh 
 ```
 
+## Parse simulation and benchmark results
+### Move to analysis directory
+```
+cd analysis
+```
+### Vidur Parsing
+Check input/output path in main before executing:
+```bash
+python vidurparser.py
+```
+
+### VLLM Benchmark Parsing
+Check input/output path in main before executing:
+
+```bash
+# Fixed QPS parsing
+python vllmbenchparser_fixedqps.py
+
+# QPS search mode parsing
+python vllmbenchparser_qps_search.py
+```
+

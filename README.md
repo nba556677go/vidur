@@ -1,4 +1,4 @@
-# Vidur: LLM Inference System Simulator
+# Vidur: LLM Inference System Simulator (With AWS benchmark)
 
 Vidur is a high-fidelity and extensible LLM inference system simulator. It can help you with:
 
