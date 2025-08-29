@@ -3,8 +3,8 @@
 ## Table of Contents
 - [Supported Models](#supported-models)
 - [Setup](#setup)
-- [Reproduce AWS instructions](#reproduce-aws-instructions---in-heredocsreproducemd)
-- [Analyze simulation](#analyze-simulation---in-heredocsanalysismd)
+- [Reproduce AWS instructions](#reproduce-aws-instructions)
+- [Analyze simulation](#analyze-simulation)
 - [Running the simulator](#running-the-simulator)
 - [Simulator Output](#simulator-output)
 - [Contributing](#contributing)
@@ -121,10 +121,12 @@ To opt out of wandb, pick any one of the following methods:
 2. Set `wandb_project` and `wandb_group` as `""` in `vidur/config/default.yml`. Also, remove these CLI params from the shell command with which the simulator is invoked.
 
 
-## Reproduce AWS instructions - in [here](docs/reproduce.md)
+## Reproduce AWS instructions
+- in [here](docs/reproduce.md)
 
 
-## Analyze simulation - in [here](docs/analysis.md)
+## Analyze simulation
+- in [here](docs/analysis.md)
 
 
 ## Running the simulator 
