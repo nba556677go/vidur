@@ -33,18 +33,19 @@ For network profiling, the network configuration of the node matters. So, we hav
 ## Adding a new model
 
 We need actual GPUs to get profiling data for a new model. Once the profiling is done, simulations can be run on CPUs only.
+### Setup environment
 
-1. Clone the [`sarathi-serve`](https://github.com/microsoft/sarathi-serve) GitHub repo.
-    1. Checkout branch [`vidur`](https://github.com/microsoft/sarathi-serve/tree/vidur)
+1. Clone the [`sarathi-serve`](https://github.com/nba556677go/sarathi-serve) GitHub repo.
+    1. Checkout branch [`vidur`](https://github.com/nba556677go/sarathi-serve/tree/vidur)
     1. Follow its README to install it.
-    1. Let us assume that the Python virtual environment was created in `sarathi-serve/env`.
-1. Now clone this repo [`vidur`](https://github.com/microsoft/vidur) but keep the `sarathi-serve/env` virtual environment activated.
-1. Add a YAML model config for the new model in `data/model_configs`.
+### Add model config
+1. Add a YAML model config for the new model in `vidur/config/model_config.py`.
     - Use the model's HuggingFace model id for the file name eg. `data/model_configs/meta-llama/Llama-2-70b-hf.yml`.
     - Refer HuggingFace `config.json` for the model eg. <https://huggingface.co/meta-llama/Llama-2-70b-hf/blob/main/config.json>.
-    - Ensure that correct parameters are set in the YAML file so that the reference transformer model [GPTModel](vidur/profiling/mlp/mlp_impl.py) closely resembles the new model.
+    - Ensure that correct parameters are set in the python file so that the reference transformer model [GPTModel](vidur/profiling/mlp/mlp_impl.py) closely resembles the new model.
     - We use this reference model to profile only the MLP operations of all the models so the attention operations are no-op'ed here.
-1. Run the following command to install the simulator in the virtual environment: `python -m pip install -e .` from the `vidur/` directory.
+1. If new devices are added, add device config in `vidur/config/device_sku_config.py` and `vidur/config/node_sku_config.py` with flops and memory usage
+1. Add device and node enum in  `vidur/types/device_sku_type.py`  and `vidur/types/node_sku_type.py` 
 1. For compute profiling (mlp and attention), 1 GPU is enough even for tensor parallel degrees greater than 1. So `num_gpus` set to 1 is sufficient albeit slower for profiling.
 1. Now we need to do the MLP profiling:
 

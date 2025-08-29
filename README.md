@@ -22,12 +22,11 @@ Vidur is a high-fidelity and extensible LLM inference system simulator. It can h
 
 __Instructions on adding a new model to existing or new SKUs can be found [here](docs/profiling.md)__.
 ### Supporting models in AWS instances (need to add profiles from s3://binghann/vidur_qps/profiling)
-```markdown
+
 | Model / Device | A10G_g5.48xlarge | L4_g6.48xlarge | A100_p4d.24xlarge | H100_p5.48xlarge | L40S_g6e.48xlarge |
 | --- | --- | --- | --- | --- | --- |
 | `meta-llama/Meta-Llama-3-8B` | ✅ | ✅ | ✅ | ✅ | ✅ |
 | `Qwen/Qwen2.5-1.5B` | ✅ | ✅ | ✅ | ✅ | ✅ |
-```
 
 ### Supporting models from original repo
 | Model / Device | A100 80GB DGX | H100 DGX | 4xA100 80GB Pairwise NVLink Node | 8xA40 Pairwise NVLink Node |
@@ -54,9 +53,24 @@ __Instructions on adding a new model to existing or new SKUs can be found [here]
 * In 4x pairwise NVLink nodes, there are 4 GPUs, so TP1, TP2 and TP4 are supported. TP4 here is less performant than TP4 in DGX nodes because (GPU1, GPU2) are connected via NVLink and (GPU3, GPU4) are connected via NVLink. but between these layers, the interconnect is slower.
 * You can use any combination of TP and PP. For example, you can run LLaMA2-70B on TP2-PP2 on a 4xA100 80GB Pairwise NVLink Node.
 
+
 ## Setup
 
-### Using `mamba`
+For details on facilitating new model profiling, please refer to [Adding a new model](docs/profiling.md#adding-a-new-model) section in the profiling documentation.
+### Install all dependencies (Recommended)
+Profiling feature for vidur is facilited with [`sarathi-serve`](https://github.com/nba556677go/sarathi-serve). A simpler way to setup environment is to install all dependencies in one conda environment
+1. Clone the [`sarathi-serve`](https://github.com/nba556677go/sarathi-serve) GitHub repo.
+2. Checkout branch [`vidur`](https://github.com/nba556677go/sarathi-serve/tree/vidur)
+3. make sure current vidur repo exists in the same file directory as sarathi-serve. 
+4. Follow `sarathi-serve` README to install it.
+5. After instsallation, activate `sarathi-vidur` environment
+```sh
+mamba activate sarathi-vidur
+```
+
+### Install vidur dependencies without profiling 
+If you dont want to test out profiling feature, you dont need to download [`sarathi-serve`](https://github.com/nba556677go/sarathi-serve) repo. Follow the command below to install environment.
+#### Using `mamba`
 
 To run the simulator, create a mamba environment with the given dependency file.
 
@@ -65,7 +79,7 @@ mamba env create -p ./env -f ./environment.yml
 mamba env update -f environment-dev.yml
 ```
 
-### Using `venv`
+#### Using `venv`
 
 1. Ensure that you have Python 3.10 installed on your system. Refer <https://www.bitecode.dev/p/installing-python-the-bare-minimum>
 2. `cd` into the repository root
@@ -74,7 +88,7 @@ mamba env update -f environment-dev.yml
 5. Install the dependencies using `python -m pip install -r requirements.txt`
 6. Run `deactivate` to deactivate the virtual environment
 
-### Using `conda` (Least recommended)
+#### Using `conda` (Least recommended)
 
 To run the simulator, create a conda environment with the given dependency file.
 

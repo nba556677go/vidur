@@ -37,12 +37,12 @@ python compare_all_vidur_vllm_percentiles.py
 - [Latency comparison](../analysis/vidur_results/qu_brand/fixed_qps/aggregated_p99_latency_comparison.png)
 - [Prediction error](../analysis/vidur_results/qu_brand/fixed_qps/aggregated_prediction_error_comparison.png)
 
-### Figure 3: Parallelism Analysis
+### Figure 3: Parallelism Cost analysis
 ```bash
 python get_config_optimizer_results_fixedqps.py
 ```
 
-- [Parallelism strategies](../analysis/vidur_results/qu_brand/fixed_qps/parallel_figs/parallelism_strategies_p4d_a100_40g_nvlink_qps29.0.png)
+- [Cost analysis with parallelism strategies ]()
 
 
 ## QPS Search Mode
@@ -61,17 +61,17 @@ python plot_max_qps_per_dollar_main.py
 ```
 
 #### Single Node Results with Benchmarks
-- [Cost analysis by parallelism](../analysis/qps_search/max_qps/parallel_figs/parallelism_strategies_a10g_g5.png)
+- [Cost analysis by parallelism]()
 - Cost analysis by instance with benchmarks
 
 #### Multinode Simulation
 
 ##### Figure 4: All-in-One Scatter Plot
-- [Scatter plot](../analysis/qps_search/max_qps/max_qps_per_dollar_qps_Qwen_Qwen2.5-1.5B.png)
+- [Scatter plot]()
 
 ##### Figure 5: Cost Analysis
-- [Multinode cost analysis](../analysis/qps_search/max_qps/max_qps_per_dollar_barchart_multinode.png)
+- [Multinode cost analysis]()
 
 ##### Figure 6: Cost by Instance with QPS Threshold
-- [Cost analysis with QPS threshold](../analysis/qps_search/max_qps/min_total_cost_qps_per_node_40.png)
+- [Cost analysis with QPS threshold]()
 
